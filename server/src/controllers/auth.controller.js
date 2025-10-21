@@ -1,6 +1,6 @@
-import { use } from 'react';
-import {user} from '../models/user.model.js';
-import {hashPassword, verifyPassword, signToken} from '../utils/passwordUtils.js';
+
+import {User} from '../models/user.model.js';
+import {hashPassword, verifyPassword, signToken} from '../utils/auth.js';
 
 export async function register(req, res, next) {
     try {

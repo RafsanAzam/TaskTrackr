@@ -11,12 +11,12 @@ export async function register(req, res, next) {
         if (password.length < 6) {
             return res.status(400).json({error: 'password too short'});
         }
-        const exists = await user.findOne({ email });
+        const exists = await User.findOne({ email });
         if (exists) {
             return res.status(409).json({error: "email already in use"});
         }
         const passwordHash = await hashPassword(password);
-        const user = await user.create({ name, email, passwordHash });
+        const user = await User.create({ name, email, passwordHash });
 
         const token = signToken({sub: user._id, email: user.email});
 
@@ -32,7 +32,7 @@ export async function login(req, res, next) {
         if(!email || !password) {
             return res.status(400).json({error: 'missing fields'});
         }
-        const user = await user.findOne({ email }).select('+passwordHash');
+        const user = await User.findOne({ email }).select('+passwordHash');
         if (!user) {
             return res.status(401).json({error: 'invalid credentials'});
         }

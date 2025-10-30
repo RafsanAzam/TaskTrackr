@@ -9,7 +9,8 @@ export function requireAuth(req, res, next) {
 
     try {
         const payload = verifyToken(token);
-        req.user = { id: payload.sub, email: payload.email };
+        // normalize to _id so controllers that expect req.user._id work correctly
+        req.user = { _id: payload.sub, email: payload.email };
         next();
     }
     catch {

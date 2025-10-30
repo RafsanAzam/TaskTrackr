@@ -5,6 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import taskRoutes from "./routes/task.routes.js";
 
 
 const app = express();  // create the app
@@ -15,6 +16,7 @@ app.use(cors({ origin: true, credentials: true }));  // allow frontend to call A
 app.use(express.json());  // read JSON bodies
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));  // logging
 app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // Quick heartbeat route:
 app.get("/health", (req, res) => {

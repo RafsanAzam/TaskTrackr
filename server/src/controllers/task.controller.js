@@ -54,7 +54,7 @@ export async function listTasks(req, res, next) {
         const sortBy = sortMap[sort] || sortMap["-createdAt"]; // fallback to default
 
         const [items, total] = await Promise.all([
-            task.find(filter).sort(sortBy).skip(skip).limit(limit),
+            Task.find(filter).sort(sortBy).skip(skip).limit(limit),
             Task.countDocuments(filter)
         ]);
 

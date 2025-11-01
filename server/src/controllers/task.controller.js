@@ -98,12 +98,23 @@ export async function updateTask(req, res, next) {
 }
 
 // DELETE /api/tasks/:id
+
 export async function deleteTask(req, res, next) {
-    try {
-        const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
-        if (!task) return res.status(404).json({ error: "Task not found" });
-        res.status(204).send();
-    } catch (err) {
-        next(err);
+  try {
+    const { id } = req.params;
+
+    // ✅ Step 1: Validate the ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid task ID format" });
     }
+
+    // ✅ Step 2: Delete the task if it exists and belongs to the user
+    const task = await Task.findOneAndDelete({ _id: id, owner: req.user._id });
+    if (!task) return res.status(404).json({ error: "Task not found" });
+
+    // ✅ Step 3: Respond with "No Content" (successful deletion)
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
 }
